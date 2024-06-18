@@ -2,27 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class CreateTransactionsTable extends Migration
+class Transaction extends Model
 {
-    public function up()
-    {
-        Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->decimal('amount', 15, 2);
-            $table->date('date');
-            $table->string('category');
-            $table->string('type');
-            $table->timestamps();
-        });
-    }
+    use HasFactory;
 
-    public function down()
+    protected $fillable = [
+        'amount', 
+        'date', 
+        'category', 
+        'type', 
+        'user_id'
+    ];
+
+    public function user()
     {
-        Schema::dropIfExists('transactions');
+        return $this->belongsTo(User::class);
     }
 }
